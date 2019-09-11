@@ -1,0 +1,30 @@
+{
+  "name": "com.maximetinu.udk",
+  "displayName": "Unity Development Kit",
+  "version": "0.0.1",
+  "unity": "2018.1",
+  "description": "Compilation of scripts, components utilities and extensions to reuse in different Unity projects",
+  "keywords": [
+    "Metinu",
+    "Maximetinu",
+    "UDK",
+    "Unity Development Kit",
+    "Dev Kit",
+    "Utils",
+    "Toolkit",
+    "Toolbox",
+    "Utilities"
+  ],
+  "category": "Utilities",
+  "hideInEditor": false,
+  "type": "library",
+  "author": {
+    "name": "Maximetinu",
+    "email": "maximetinu@gmail.com",
+    "url": "https://www.metinu.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Maximetinu/Unity-Development-Kit.git"
+  }
+}
