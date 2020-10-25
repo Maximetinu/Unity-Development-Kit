@@ -1,0 +1,94 @@
+#!/bin/bash
+#
+# An example hook script to verify what is about to be committed.
+# Called by "git commit" with no arguments.  The hook should
+# exit with non-zero status after issuing an appropriate message if
+# it wants to stop the commit.
+#
+# To enable this hook, rename this file to "pre-commit".
+
+ASSETS_DIR="$(git config --get unity3d.assets-dir || echo "Assets")"
+
+if git rev-parse --verify HEAD >/dev/null 2>&1
+then
+	against=HEAD
+else
+	# Initial commit: diff against an empty tree object
+	against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+fi
+
+# Redirect output to stderr.
+exec 1>&2
+
+git diff --cached --name-only --diff-filter=A -z $against -- "$ASSETS_DIR" | while read -d $'\0' f; do
+	ext="${f##*.}"
+	base="${f%.*}"
+
+	if [ "$ext" = "meta" ]; then
+		if [ $(git ls-files --cached -- "$base" | wc -l) = 0 ]; then
+			cat <<EOF
+
+[EST] Error: no puedes commitear un directorio vacío --> \`$base'.
+Borra el directorio en Unity, para que se borre su .meta \`$f', y así poder completar el commit.
+Puedes hacerlo desde GambusinoLabs/Git/RemoveEmptyFolders
+---
+Lo que pasa es que no se puede subir un .meta cualquiera sin su archivo asociado, y Git no reconoce directorios como archivos.
+Estás intentando commitear el .meta \`$f' , pero su archivo asociado \`$base' no se encuentra.
+Si es un archivo, añade el archivo \`$base' al commit también.
+Y si es un directorio, como no puedes añadirlo al commit, bórralo.
+EOF
+			exit 1
+		fi
+	else
+		p="$f"
+		while [ "$p" != "$ASSETS_DIR" ]; do
+			if [ $(git ls-files --cached -- "$p.meta" | wc -l) = 0 ]; then
+				cat <<EOF
+[EST] Error: Faltan archivos .meta
+El asset \`$f' ha sido añadido al commit, pero su archivo \`$p.meta' no.
+Por favor, abre Unity para que se auto-genere el archivo \`$p.meta'.
+EOF
+				exit 1
+			fi
+			p="${p%/*}"
+		done
+	fi
+done
+ret="$?"
+if [ "$ret" != 0 ]; then
+	exit "$ret"
+fi
+
+git diff --cached --name-only --diff-filter=D -z $against -- "$ASSETS_DIR" | while read -d $'\0' f; do
+	ext="${f##*.}"
+	base="${f%.*}"
+
+	if [ "$ext" = "meta" ]; then
+		if [ $(git ls-files --cached -- "$base" | wc -l) != 0 ]; then
+			cat <<EOF
+[EST] Error: archivo asociado a .meta no encontrado.
+Meta file \`$f' is removed, but \`$base' is still selected in git.
+Please remove \`$base' from git as well.
+EOF
+			exit 1
+		fi
+	else
+		p="$f"
+		while [ "$p" != "$ASSETS_DIR" ]; do
+			if [ $(git ls-files --cached -- "$p" | wc -l) = 0 ] && [ $(git ls-files --cached -- "$p.meta" | wc -l) != 0 ]; then
+				cat <<EOF
+[EST] Error: Faltan archivos .meta. Prohibido commitear un archivo sin su .meta. Abre el proyecto de Unity para que se te auto-generen.
+El asset \`$f' ha sido borrado, pero \`$p.meta' está todavía añadido a git.
+Por favor borra \`$p.meta' de git también.
+EOF
+				exit 1
+			fi
+			p="${p%/*}"
+		done
+	fi
+done
+
+ret="$?"
+if [ "$ret" != 0 ]; then
+	exit "$ret"
+fi

@@ -1,0 +1,17 @@
+{
+    "name": "UDK.Editor.GitHooks",
+    "references": [
+        "GUID:c1506e5eebcabbe499286446a831f273"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
