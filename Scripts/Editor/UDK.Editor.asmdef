@@ -1,5 +1,5 @@
 {
-    "name": "GitUtils.Editor",
+    "name": "UDK.Editor",
     "references": [],
     "includePlatforms": [
         "Editor"
@@ -10,5 +10,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }
