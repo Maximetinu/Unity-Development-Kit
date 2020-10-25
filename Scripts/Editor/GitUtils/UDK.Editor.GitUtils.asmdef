@@ -1,5 +1,5 @@
 {
-    "name": "GitUtils.Editor.GitUtils",
+    "name": "UDK.Editor.GitUtils",
     "references": [
         "GUID:c1506e5eebcabbe499286446a831f273"
     ],
@@ -12,5 +12,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }
