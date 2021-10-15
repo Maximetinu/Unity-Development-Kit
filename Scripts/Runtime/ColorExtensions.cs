@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace UDK
@@ -33,6 +35,67 @@ namespace UDK
         public static string AsHexStringAlpha(this Color source)
         {
             return ColorUtility.ToHtmlStringRGBA(source);
+        }
+
+        public static byte[] AsByteArray(this IEnumerable<Color> sources)
+        {
+            int count = sources.Count() * 3;
+            int index = 0;
+            var array = new byte[count];
+
+            foreach (Color source in sources)
+            {
+                array[index + 0] = source.r.AsByteColorValue();
+                array[index + 1] = source.g.AsByteColorValue();
+                array[index + 2] = source.b.AsByteColorValue();
+                index += 3;
+            }
+
+            return array;
+        }
+
+        public static byte[] AsByteArrayAlpha(this IEnumerable<Color> sources)
+        {
+            int count = sources.Count() * 4;
+            int index = 0;
+            var array = new byte[count];
+
+            foreach (Color source in sources)
+            {
+                array[index + 0] = source.r.AsByteColorValue();
+                array[index + 1] = source.g.AsByteColorValue();
+                array[index + 2] = source.b.AsByteColorValue();
+                array[index + 3] = source.a.AsByteColorValue();
+                index += 4;
+            }
+
+            return array;
+        }
+
+        public static byte[] AsByteArray(this Color source)
+        {
+            return new []
+            {
+                source.r.AsByteColorValue(),
+                source.g.AsByteColorValue(),
+                source.b.AsByteColorValue()
+            };
+        }
+
+        public static byte[] AsByteArrayAlpha(this Color source)
+        {
+            return new[]
+            {
+                source.r.AsByteColorValue(),
+                source.g.AsByteColorValue(),
+                source.b.AsByteColorValue(),
+                source.a.AsByteColorValue()
+            };
+        }
+
+        private static byte AsByteColorValue(this float colorValue)
+        {
+            return (byte)(colorValue * 255);
         }
     }
 }
