@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UDK
 {
-    public static class IListExtensions
+    public static class IListExt
     {
         private static readonly Random random = new Random();
 
