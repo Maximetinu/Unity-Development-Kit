@@ -27,5 +27,19 @@ namespace UDK
 			var worldToLocalMatrix = Matrix4x4.TRS(transform.position, Quaternion.identity, Vector3.one).inverse;
 			return worldToLocalMatrix.MultiplyPoint3x4(worldPosition);
 		}
+
+		public static void SetMatrix(this UnityEngine.Transform transform, UnityEngine.Matrix4x4 matrix)
+		{
+			transform.localScale = matrix.GetScale();
+			transform.rotation = matrix.GetRotation();
+			transform.position = matrix.GetPosition();
+		}
+
+		public static void SetMatrixLocal(this UnityEngine.Transform transform, UnityEngine.Matrix4x4 matrix)
+		{
+			transform.localScale = matrix.GetScale();
+			transform.localRotation = matrix.GetRotation();
+			transform.localPosition = matrix.GetPosition();
+		}
 	}
 }
