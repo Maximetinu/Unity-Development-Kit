@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace UDK
 {
-    public static class MonoBehaviourTweenExt
+    public static class MonoBehaviourExt
     {
         public static void Tween(this MonoBehaviour self, float duration, Action<float> onProgress, Action onComplete = null)
         {

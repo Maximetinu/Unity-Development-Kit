@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UDK
 {
-    public static class ColorExtensions
+    public static class ColorExt
     {
         public static Color WithOpacityOf(this Color source, Color target)
         {
