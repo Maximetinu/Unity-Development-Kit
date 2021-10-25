@@ -28,7 +28,7 @@ git diff --cached --name-only --diff-filter=A -z $against -- "$ASSETS_DIR" | whi
 		if [ $(git ls-files --cached -- "$base" | wc -l) = 0 ]; then
 			cat <<EOF
 
-[EST] Error: no puedes commitear un directorio vacío --> \`$base'.
+[UDK] Error: no puedes commitear un directorio vacío --> \`$base'.
 Borra el directorio en Unity, para que se borre su .meta \`$f', y así poder completar el commit.
 Puedes hacerlo desde GambusinoLabs/Git/RemoveEmptyFolders
 ---
@@ -44,7 +44,7 @@ EOF
 		while [ "$p" != "$ASSETS_DIR" ]; do
 			if [ $(git ls-files --cached -- "$p.meta" | wc -l) = 0 ]; then
 				cat <<EOF
-[EST] Error: Faltan archivos .meta
+[UDK] Error: Faltan archivos .meta
 El asset \`$f' ha sido añadido al commit, pero su archivo \`$p.meta' no.
 Por favor, abre Unity para que se auto-genere el archivo \`$p.meta'.
 EOF
@@ -66,7 +66,7 @@ git diff --cached --name-only --diff-filter=D -z $against -- "$ASSETS_DIR" | whi
 	if [ "$ext" = "meta" ]; then
 		if [ $(git ls-files --cached -- "$base" | wc -l) != 0 ]; then
 			cat <<EOF
-[EST] Error: archivo asociado a .meta no encontrado.
+[UDK] Error: archivo asociado a .meta no encontrado.
 Meta file \`$f' is removed, but \`$base' is still selected in git.
 Please remove \`$base' from git as well.
 EOF
@@ -77,7 +77,7 @@ EOF
 		while [ "$p" != "$ASSETS_DIR" ]; do
 			if [ $(git ls-files --cached -- "$p" | wc -l) = 0 ] && [ $(git ls-files --cached -- "$p.meta" | wc -l) != 0 ]; then
 				cat <<EOF
-[EST] Error: Faltan archivos .meta. Prohibido commitear un archivo sin su .meta. Abre el proyecto de Unity para que se te auto-generen.
+[UDK] Error: Faltan archivos .meta. Prohibido commitear un archivo sin su .meta. Abre el proyecto de Unity para que se te auto-generen.
 El asset \`$f' ha sido borrado, pero \`$p.meta' está todavía añadido a git.
 Por favor borra \`$p.meta' de git también.
 EOF
