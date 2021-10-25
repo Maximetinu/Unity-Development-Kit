@@ -28,14 +28,7 @@ git diff --cached --name-only --diff-filter=A -z $against -- "$ASSETS_DIR" | whi
 		if [ $(git ls-files --cached -- "$base" | wc -l) = 0 ]; then
 			cat <<EOF
 
-[EST] Error: no puedes commitear un directorio vacío --> \`$base'.
-Borra el directorio en Unity, para que se borre su .meta \`$f', y así poder completar el commit.
-Puedes hacerlo desde GambusinoLabs/Git/RemoveEmptyFolders
----
-Lo que pasa es que no se puede subir un .meta cualquiera sin su archivo asociado, y Git no reconoce directorios como archivos.
-Estás intentando commitear el .meta \`$f' , pero su archivo asociado \`$base' no se encuentra.
-Si es un archivo, añade el archivo \`$base' al commit también.
-Y si es un directorio, como no puedes añadirlo al commit, bórralo.
+[UDK] Error: you cannot commit an empty folder --> \`$base'. Please, delete it.
 EOF
 			exit 1
 		fi
@@ -44,9 +37,7 @@ EOF
 		while [ "$p" != "$ASSETS_DIR" ]; do
 			if [ $(git ls-files --cached -- "$p.meta" | wc -l) = 0 ]; then
 				cat <<EOF
-[EST] Error: Faltan archivos .meta
-El asset \`$f' ha sido añadido al commit, pero su archivo \`$p.meta' no.
-Por favor, abre Unity para que se auto-genere el archivo \`$p.meta'.
+[UDK] Error: Asset \`$f' is missing its corresponding meta file \`$p.meta'. Please, open Unity to auto generate it.
 EOF
 				exit 1
 			fi
@@ -66,9 +57,7 @@ git diff --cached --name-only --diff-filter=D -z $against -- "$ASSETS_DIR" | whi
 	if [ "$ext" = "meta" ]; then
 		if [ $(git ls-files --cached -- "$base" | wc -l) != 0 ]; then
 			cat <<EOF
-[EST] Error: archivo asociado a .meta no encontrado.
-Meta file \`$f' is removed, but \`$base' is still selected in git.
-Please remove \`$base' from git as well.
+[UDK] Error: Meta file \`$f' is removed, but \`$base' is still selected in git. Please, remove \`$base' as well.
 EOF
 			exit 1
 		fi
@@ -77,9 +66,7 @@ EOF
 		while [ "$p" != "$ASSETS_DIR" ]; do
 			if [ $(git ls-files --cached -- "$p" | wc -l) = 0 ] && [ $(git ls-files --cached -- "$p.meta" | wc -l) != 0 ]; then
 				cat <<EOF
-[EST] Error: Faltan archivos .meta. Prohibido commitear un archivo sin su .meta. Abre el proyecto de Unity para que se te auto-generen.
-El asset \`$f' ha sido borrado, pero \`$p.meta' está todavía añadido a git.
-Por favor borra \`$p.meta' de git también.
+[UDK] Error: Asset \`$f' was deleted, but \`$p.meta' wasn't. Please, remove \`$p.meta' as well.
 EOF
 				exit 1
 			fi
