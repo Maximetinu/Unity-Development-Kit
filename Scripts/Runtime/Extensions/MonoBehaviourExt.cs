@@ -28,5 +28,16 @@ namespace UDK
 
             onComplete?.Invoke();
         }
+
+        public static Coroutine Delay(this MonoBehaviour self, float delayTime, Action then)
+        {
+            return self.StartCoroutine(ExecuteAfterTime(then, delayTime));
+        }
+
+        private static IEnumerator ExecuteAfterTime(Action then, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            then();
+        }
     }
 }
