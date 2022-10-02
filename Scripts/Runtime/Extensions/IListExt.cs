@@ -5,7 +5,7 @@ namespace UDK
 {
     public static class IListExt
     {
-        private static readonly Random random = new Random();
+        private static readonly Random Random = new();
 
         public static void Shuffle<T>(this IList<T> list)
         {
@@ -13,11 +13,22 @@ namespace UDK
             while (n > 1)
             {
                 n--;
-                int k = random.Next(n + 1);
+                int k = Random.Next(n + 1);
                 T value = list[k];
                 list[k] = list[n];
                 list[n] = value;
             }
+        }
+
+        public static T RandomInstance<T>(this IList<T> list)
+        {
+            return list.RandomInstance(Random);
+        }
+
+        public static T RandomInstance<T>(this IList<T> list, Random random)
+        {
+            var index = random.Next(list.Count);
+            return list[index];
         }
     }
 }
